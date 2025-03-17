@@ -18,6 +18,7 @@ int main() {
 
 	for (int n = 0; n < dirCount; n++) {
 		printf("%s\n", folders[n]);
+		free(folders[n]);
 	}
 
 	int mdCount = getMarkdownCount(path);
@@ -29,6 +30,7 @@ int main() {
 
 	for (int n = 0; n < mdCount; n++) {
 		printf("%s\n", notes[n]);
+		free(notes[n]);
 	}
 
 	return 0;

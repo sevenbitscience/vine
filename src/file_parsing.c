@@ -71,7 +71,7 @@ void GetCourses(char* courses[], char* path) {
 	if (directory != NULL) {
 		while (file = readdir(directory)) {
 			if (file->d_name[0] != '.' && isDirectory(file->d_name)) {		// Ignore hidden files
-				courses[i] = (char*) malloc(sizeof(file->d_name));
+				courses[i] = malloc(sizeof(char*));
 				strcpy(courses[i], file->d_name);
 				i++;
 			}
@@ -91,7 +91,7 @@ void GetNotes(char* files[], char* path) {
 	if (directory != NULL) {
 		while (file = readdir(directory)) {
 			if (file->d_name[0] != '.' && isMarkdown(file->d_name)) {		// Ignore hidden files
-				files[i] = (char*) malloc(sizeof(file->d_name));
+				files[i] = malloc(sizeof(char*));
 				strcpy(files[i], file->d_name);
 				i++;
 			}
