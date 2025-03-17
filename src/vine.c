@@ -7,7 +7,15 @@
 #include <stdio.h>
 #include "file_parsing.c"
 
+void file_test();
+
 int main() {
+	file_test();
+
+	return 0;
+}
+
+void file_test() {
 	char* path = "./";
 	int dirCount = getCourseCount(path);
 
@@ -32,7 +40,4 @@ int main() {
 		printf("%s\n", notes[n]);
 		free(notes[n]);
 	}
-
-	return 0;
 }
-
