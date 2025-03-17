@@ -12,9 +12,10 @@ void Init();
  * One of the files is highlighted to show a selection
  *
  * @param files List of strings, i.e. file names
+ * @param n_files The number of files to be listed
  * @param selected The index of the selected file
  */
-void DrawFiles(char* files[], int selected);
+void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot);
 
 /**
  * Draw some text, horizontally centered
