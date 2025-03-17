@@ -2,4 +2,4 @@ vine:
 	gcc src/vine.c -o vine
 
 drawtest:
-	gcc src/drawtest.c -lncucrses -o draw
+	gcc src/drawtest.c -lncurses -o draw
