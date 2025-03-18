@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 
+
 void file_test();
 
 int main() {
@@ -22,40 +23,23 @@ int main() {
 
 	Init();
 
-	int selected_line = 0;
+	drawCenteredText("vine", 3);
 
-	DrawFiles(course_folders, n_courses, selected_line, 5, 2);
+	DrawFiles(course_folders, n_courses, 0, 5, 2);
 	refresh();
 
-	for (;;) {
-		// Wait for user input
-		char input = getch();
+	int selected_course = SelectMenu(course_folders, n_courses);
 
-		switch (input) {
-			case 'q':
-				// End ncurses
-				endwin();
-				return 0;
-				break;
-			case 'j':
-				if (selected_line < n_courses-1) {
-					selected_line = (selected_line + 1);
-					DrawFiles(course_folders, n_courses, selected_line, 5, 2);
-					refresh();
-				}
-				break;
-			case 'k':
-				if (selected_line > 0) {
-					selected_line = (selected_line - 1);
-					DrawFiles(course_folders, n_courses, selected_line, 5, 2);
-					refresh();
-				}
-				break;
-			
-		}
-	}
+	// Show the options for folders
+
+	char* notes_dir;
+	notes_dir = malloc(2 + sizeof(path) + sizeof(course_folders[selected_course]));
+	strcpy(notes_dir, path);
+	strcat(notes_dir, course_folders[selected_course]);
+	strcat(notes_dir, "/");
 
 	endwin();
+	printf("%s\n", notes_dir);
 	return 0;
 }
 
