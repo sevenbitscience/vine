@@ -1,6 +1,6 @@
 vine:
 	mkdir -p ./build
-	gcc ./src/vine.c -o ./build/vine
+	gcc ./src/vine.c -lncurses -o ./build/vine
 
 tui:
 	mkdir -p ./build

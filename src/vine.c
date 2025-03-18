@@ -4,14 +4,58 @@
  * Joey Milausnic, March 2025
  */
 
-#include <stdio.h>
 #include "file_parsing.c"
+#include "tui_utils.c"
+
+#include <stdio.h>
 
 void file_test();
 
 int main() {
-	file_test();
+	// Find the classes first
+	char* path = "./";
+	int n_courses = getCourseCount(path);
 
+	// Create the array of classes
+	char* course_folders[n_courses];
+	GetCourses(course_folders, path);
+
+	Init();
+
+	int selected_line = 0;
+
+	DrawFiles(course_folders, n_courses, selected_line, 5, 2);
+	refresh();
+
+	for (;;) {
+		// Wait for user input
+		char input = getch();
+
+		switch (input) {
+			case 'q':
+				// End ncurses
+				endwin();
+				return 0;
+				break;
+			case 'j':
+				if (selected_line < n_courses-1) {
+					selected_line = (selected_line + 1);
+					DrawFiles(course_folders, n_courses, selected_line, 5, 2);
+					refresh();
+				}
+				break;
+			case 'k':
+				if (selected_line > 0) {
+					selected_line = (selected_line - 1);
+					DrawFiles(course_folders, n_courses, selected_line, 5, 2);
+					refresh();
+				}
+				break;
+			
+		}
+	}
+
+	endwin();
 	return 0;
 }
 
