@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 
+#define TITLE "vine"
 
 void file_test();
 
@@ -23,14 +24,13 @@ int main() {
 
 	Init();
 
-	drawCenteredText("vine", 3);
-
+	drawCenteredText(TITLE, 3);
 	DrawFiles(course_folders, n_courses, 0, 5, 2);
 	refresh();
 
-	int selected_course = SelectMenu(course_folders, n_courses);
-
 	// Show the options for folders
+
+	int selected_course = SelectMenu(course_folders, n_courses);
 
 	char* notes_dir;
 	notes_dir = malloc(2 + sizeof(path) + sizeof(course_folders[selected_course]));
@@ -38,8 +38,24 @@ int main() {
 	strcat(notes_dir, course_folders[selected_course]);
 	strcat(notes_dir, "/");
 
+	// TODO: Free up `course_folders`
+
+	// Now we can look in the selected folder for notes
+	int notes_count = getMarkdownCount(notes_dir);
+	char* notes[notes_count];
+	GetNotes(notes, notes_dir);
+
+	clear();
+
+	drawCenteredText(TITLE, 3);
+	DrawFiles(notes, notes_count, 0, 5, 2);
+	refresh();
+
+	// Show the options for folders
+
+	int selected_note = SelectMenu(notes, notes_count);
+
 	endwin();
-	printf("%s\n", notes_dir);
 	return 0;
 }
 
