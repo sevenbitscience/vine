@@ -56,6 +56,13 @@ int main() {
 	int selected_note = SelectMenu(notes, notes_count);
 
 	endwin();
+
+	char* vim_call = malloc(sizeof("vim ") + sizeof(notes_dir) + sizeof(notes[selected_note] + 1));
+	strcpy(vim_call, "vim ");
+	strcat(vim_call, notes_dir);
+	strcat(vim_call, notes[selected_note]);
+	system(vim_call);
+
 	return 0;
 }
 
