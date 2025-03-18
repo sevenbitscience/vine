@@ -36,17 +36,21 @@ void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot) {
 		if (y_height > (LINES - p_bot)) {
 			break;
 		}
+
 		if (i == selected) {
 			attrset(COLOR_PAIR(2));
-		} else {
-			attrset(COLOR_PAIR(1));
 		}
 		drawCenteredText(files[i], y_height);
+		if (i == selected) {
+			attrset(COLOR_PAIR(1));
+		}
+
 	}
 }
 
 int SelectMenu(char* items[], int size) {
 	int selected_item = 0;
+	int reload_required = 1;
 
 	for (;;) {
 		// Wait for user input
@@ -59,19 +63,24 @@ int SelectMenu(char* items[], int size) {
 				return -1;
 				break;
 			case 'j':
-				if (selected_item < size) {
+				if (selected_item < size-1) {
 					selected_item = (selected_item + 1);
+					reload_required++;
 				}
 				break;
 			case 'k':
 				if (selected_item > 0) {
 					selected_item = (selected_item - 1);
+					reload_required++;
 				}
 				break;
 			case '\n':
 				return selected_item;
 		}
-		DrawFiles(items, size, selected_item, 5, 2);
-		refresh();
+		if (reload_required) {
+			DrawFiles(items, size, selected_item, 5, 2);
+			refresh();
+			reload_required = 0;
+		}
 	}
 }
