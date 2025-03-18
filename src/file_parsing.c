@@ -66,15 +66,20 @@ void GetCourses(char* courses[], char* path) {
 	DIR *directory;
 	struct dirent *file;
 	int i = 0;
+	char* filepath;
 
-	directory = opendir("./");
+	directory = opendir(path);
 	if (directory != NULL) {
 		while (file = readdir(directory)) {
-			if (file->d_name[0] != '.' && isDirectory(file->d_name)) {		// Ignore hidden files
+			filepath = malloc(sizeof(path) + sizeof(file->d_name) + 1);		
+			strcpy(filepath, path);
+			strcat(filepath, file->d_name);
+			if (file->d_name[0] != '.' && isDirectory(filepath)) {		// Ignore hidden files
 				courses[i] = malloc(sizeof(char*));
 				strcpy(courses[i], file->d_name);
 				i++;
 			}
+			free(filepath);
 		}
 		(void) closedir(directory);
 	} else {
@@ -86,15 +91,20 @@ void GetNotes(char* files[], char* path) {
 	DIR *directory;
 	struct dirent *file;
 	int i = 0;
+	char* filepath;
 
-	directory = opendir("./");
+	directory = opendir(path);
 	if (directory != NULL) {
 		while (file = readdir(directory)) {
-			if (file->d_name[0] != '.' && isMarkdown(file->d_name)) {		// Ignore hidden files
+			filepath = malloc(sizeof(path) + sizeof(file->d_name) + 1);		
+			strcpy(filepath, path);
+			strcat(filepath, file->d_name);
+			if (file->d_name[0] != '.' && isMarkdown(filepath)) {		// Ignore hidden files
 				files[i] = malloc(sizeof(char*));
 				strcpy(files[i], file->d_name);
 				i++;
 			}
+			free(filepath);
 		}
 		(void) closedir(directory);
 	} else {
