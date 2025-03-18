@@ -44,3 +44,34 @@ void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot) {
 		drawCenteredText(files[i], y_height);
 	}
 }
+
+int SelectMenu(char* items[], int size) {
+	int selected_item = 0;
+
+	for (;;) {
+		// Wait for user input
+		char input = getch();
+
+		switch (input) {
+			case 'q':
+				// End ncurses
+				endwin();
+				return -1;
+				break;
+			case 'j':
+				if (selected_item < size) {
+					selected_item = (selected_item + 1);
+				}
+				break;
+			case 'k':
+				if (selected_item > 0) {
+					selected_item = (selected_item - 1);
+				}
+				break;
+			case '\n':
+				return selected_item;
+		}
+		DrawFiles(items, size, selected_item, 5, 2);
+		refresh();
+	}
+}

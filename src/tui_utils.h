@@ -25,4 +25,16 @@ void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot);
  */
 void drawCenteredText(char* string, int y);
 
+/**
+ * Show menu for selecting an item from a list
+ *
+ *	Will return the index of the course a user wants to select
+ *	Returns -1 if the user wishes to quit the program 
+ *
+ * @param courses The array of items
+ * @param size The number of elements in the array
+ * @return the index of the item that was selected
+ */
+int SelectMenu(char* items[], int size);
+
 #endif
