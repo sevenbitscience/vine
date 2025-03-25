@@ -32,6 +32,11 @@ int main() {
 
 	int selected_course = SelectMenu(course_folders, n_courses);
 
+	if (selected_course == -1) {
+		endwin();
+		return 0;
+	}
+
 	char* notes_dir;
 	notes_dir = malloc(2 + sizeof(path) + sizeof(course_folders[selected_course]));
 	strcpy(notes_dir, path);
@@ -54,6 +59,11 @@ int main() {
 	// Show the options for folders
 
 	int selected_note = SelectMenu(notes, notes_count);
+
+	if (selected_note == -1) {
+		endwin();
+		return 0;
+	}
 
 	endwin();
 
