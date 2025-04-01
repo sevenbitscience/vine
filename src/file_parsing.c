@@ -20,6 +20,26 @@ int isDirectory(const char *path) {
    return S_ISDIR(statbuf.st_mode);
 }
 
+int getFileCount(const char* path) {
+	DIR *directory;						// The directory we are searching in
+	struct dirent *file;				// A directory entry
+	int fileCount = 0;
+
+	directory = opendir(path);
+	if (directory != NULL) {
+		while (file = readdir(directory)) {
+			if (file->d_name[0] != '.') {		// Ignore hidden files
+				fileCount++;
+			}
+		}
+		(void) closedir(directory);
+	} else {
+		perror("Couldn't open the directory");
+	}
+
+	return fileCount;
+}
+
 int getCourseCount(const char* path) {
 	DIR *directory;						// The directory we are searching in
 	struct dirent *file;				// A directory entry
@@ -60,6 +80,31 @@ int getMarkdownCount(const char* path) {
 	}
 
 	return fileCount;
+}
+
+void GetFiles(char* files[], char* path) {
+	DIR *directory;
+	struct dirent *file;
+	int i = 0;
+	char* filepath;
+
+	directory = opendir(path);
+	if (directory != NULL) {
+		while (file = readdir(directory)) {
+			filepath = malloc(sizeof(path) + sizeof(file->d_name) + 1);		
+			strcpy(filepath, path);
+			strcat(filepath, file->d_name);
+			if (file->d_name[0] != '.') {		// Ignore hidden files
+				files[i] = malloc(sizeof(char*));
+				strcpy(files[i], file->d_name);
+				i++;
+			}
+			free(filepath);
+		}
+		(void) closedir(directory);
+	} else {
+		perror("Couldn't open the directory");
+	}
 }
 
 void GetCourses(char* courses[], char* path) {

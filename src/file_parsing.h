@@ -20,6 +20,13 @@ int isMarkdown(const char* filename);
 int isDirectory(const char *path);
 
 /**
+ * Counts the number of files and directories in a directory
+ *
+ * @param path Path to the directory to search in
+ */
+int getFileCount(const char* path);
+
+/**
  * Counts the number of directories in a parent directory
  *
  * @param path Path to the parent directory to search in
@@ -32,6 +39,16 @@ int getCourseCount(const char* path);
  * @param path Path to the parent directory to search in
  */
 int getMarkdownCount(const char* path);
+
+/**
+ * Create an array of file or directory names
+ *
+ * Generic function for creating an array of objects in a directory
+ *
+ * @param courses The array that the file/folder names will be added to
+ * @param path The path to search at
+ */
+void GetFiles(char* files[], char* path);
 
 /**
  * Create an array of course names
