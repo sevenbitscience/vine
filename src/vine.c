@@ -45,6 +45,7 @@ int main() {
 		if (isDirectory(directory[selection_index])) {
 			// The selected item is a directory, so we should
 			// append it to the path, and let the user look in there
+
 			char* next_dir;
 			next_dir = malloc(2 + sizeof(path) + sizeof(directory[selection_index]));
 			strcpy(next_dir, path);
@@ -53,6 +54,7 @@ int main() {
 			path = next_dir;
 		} else {
 			// The selected item is some file, so lets open it up for the user
+
 			char* callEditor;
 			// Allocate space for the string with the name of the program, a space,
 			// the path to the file, and the file name.
