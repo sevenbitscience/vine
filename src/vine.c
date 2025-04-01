@@ -10,69 +10,65 @@
 #include <stdio.h>
 
 #define TITLE "vine"
+#define EDITOR "vim"
 
 int main() {
-	// Find the classes first
-	char* path = "./";
-	int n_courses = getCourseCount(path);
-
-	// Create the array of classes
-	char* course_folders[n_courses];
-	GetCourses(course_folders, path);
-
+	// Start ncurses
 	Init();
 
-	drawCenteredText(TITLE, 3);
-	DrawFiles(course_folders, n_courses, 0, 5, 2);
-	refresh();
+	// Initial search directory
+	char* path = "./";
 
-	// Show the options for folders
+	//int n_files = getCourseCount(path);
+	while (1) {
+		int n_files;
+		n_files = getFileCount(path);
 
-	int selected_course = SelectMenu(course_folders, n_courses);
+		// Create the array of classes
+		char* directory[n_files];
+		GetFiles(directory, path);
 
-	if (selected_course == -1) {
-		endwin();
-		return 0;
+		drawCenteredText(TITLE, 3);
+		DrawFiles(directory, n_files, 0, 5, 2);
+		refresh();
+
+		// Show user the selection menu to pick a file
+		int selection_index = SelectMenu(directory, n_files);
+
+		// If the user wants to quit
+		if (selection_index == -1) {
+			//free(directory);
+			endwin();
+			return 0;
+		}
+
+		if (isDirectory(directory[selection_index])) {
+			// The selected item is a directory, so we should
+			// append it to the path, and let the user look in there
+			char* next_dir;
+			next_dir = malloc(2 + sizeof(path) + sizeof(directory[selection_index]));
+			strcpy(next_dir, path);
+			strcat(next_dir, directory[selection_index]);
+			strcat(next_dir, "/");
+			path = next_dir;
+		} else {
+			// The selected item is some file, so lets open it up for the user
+			char* callEditor;
+			// Allocate space for the string with the name of the program, a space,
+			// the path to the file, and the file name.
+			callEditor = malloc(sizeof(EDITOR) + sizeof(path) + 
+					sizeof(directory[selection_index] + 2));
+			strcpy(callEditor, EDITOR);
+			strcat(callEditor, " ");
+			strcat(callEditor, path);
+			strcat(callEditor, directory[selection_index]);
+			endwin();
+			system(callEditor);
+
+			free(callEditor);
+			//free(directory);
+			return 0;
+		}
 	}
-
-	char* notes_dir;
-	notes_dir = malloc(2 + sizeof(path) + sizeof(course_folders[selected_course]));
-	strcpy(notes_dir, path);
-	strcat(notes_dir, course_folders[selected_course]);
-	strcat(notes_dir, "/");
-
-	// TODO: Free up `course_folders`
-
-	// Now we can look in the selected folder for notes
-	int notes_count = getMarkdownCount(notes_dir);
-	char* notes[notes_count];
-	GetNotes(notes, notes_dir);
-
-	clear();
-
-	drawCenteredText(TITLE, 3);
-	DrawFiles(notes, notes_count, 0, 5, 2);
-	refresh();
-
-	// Show the options for folders
-
-	int selected_note = SelectMenu(notes, notes_count);
-
-	if (selected_note == -1) {
-		free(notes_dir);
-		endwin();
-		return 0;
-	}
-
-	endwin();
-
-	char* vim_call = malloc(sizeof("vim ") + sizeof(notes_dir) + sizeof(notes[selected_note] + 1));
-	strcpy(vim_call, "vim ");
-	strcat(vim_call, notes_dir);
-	strcat(vim_call, notes[selected_note]);
-	system(vim_call);
-
-	free(vim_call);
-	free(notes_dir);
 	return 0;
 }
