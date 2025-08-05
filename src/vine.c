@@ -25,8 +25,7 @@ int main() {
 		n_files = getFileCount(path);
 
 		// Create the array of classes
-		char* directory[n_files];
-		GetFiles(directory, path);
+		char** directory = GetFiles(path);
 
 		drawCenteredText(TITLE, 3);
 		DrawFiles(directory, n_files, 0, 5, 2);
@@ -37,7 +36,7 @@ int main() {
 
 		// If the user wants to quit
 		if (selection_index == -1) {
-			//free(directory);
+			free(directory);
 			endwin();
 			return 0;
 		}
@@ -45,30 +44,20 @@ int main() {
 		if (isDirectory(directory[selection_index])) {
 			// The selected item is a directory, so we should
 			// append it to the path, and let the user look in there
-
-			char* next_dir;
-			next_dir = malloc(2 + sizeof(path) + sizeof(directory[selection_index]));
-			strcpy(next_dir, path);
+			char* next_dir = strdup(path);
 			strcat(next_dir, directory[selection_index]);
-			strcat(next_dir, "/");
 			path = next_dir;
 		} else {
 			// The selected item is some file, so lets open it up for the user
 
-			char* callEditor;
-			// Allocate space for the string with the name of the program, a space,
-			// the path to the file, and the file name.
-			callEditor = malloc(sizeof(EDITOR) + sizeof(path) + 
-					sizeof(directory[selection_index] + 2));
-			strcpy(callEditor, EDITOR);
+			char* callEditor = strdup(EDITOR);
 			strcat(callEditor, " ");
-			strcat(callEditor, path);
 			strcat(callEditor, directory[selection_index]);
 			endwin();
 			system(callEditor);
 
 			free(callEditor);
-			//free(directory);
+			free(directory);
 			return 0;
 		}
 	}
