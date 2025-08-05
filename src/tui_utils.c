@@ -29,7 +29,6 @@ void drawCenteredText(char* string, int y) {
 
 void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot) {
 	int y_height;
-	int x_cor;
 
 	for (int i = 0; i < n_files; i++) {
 		y_height = i + p_top;
