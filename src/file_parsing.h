@@ -21,9 +21,9 @@ int getFileCount(const char* path);
  *
  * Generic function for creating an array of objects in a directory
  *
- * @param courses The array that the file/folder names will be added to
  * @param path The path to search at
+ * @return A char** containing relative filepaths
  */
-void GetFiles(char* files[], char* path);
+char** GetFiles(const char* path);
 
 #endif

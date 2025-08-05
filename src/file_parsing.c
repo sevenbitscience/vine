@@ -19,8 +19,8 @@ int getFileCount(const char* path) {
 
 	directory = opendir(path);
 	if (directory != NULL) {
-		while (file = readdir(directory)) {
-			if (file->d_name[0] != '.') {		// Ignore hidden files
+		while ((file = readdir(directory)) != NULL) {
+			if (file->d_name[0] != '.' && file->d_type == DT_REG) {		// Ignore hidden files
 				fileCount++;
 			}
 		}
@@ -32,6 +32,7 @@ int getFileCount(const char* path) {
 	return fileCount;
 }
 
+/*
 void GetFiles(char* files[], char* path) {
 	DIR *directory;
 	struct dirent *file;
@@ -40,19 +41,65 @@ void GetFiles(char* files[], char* path) {
 
 	directory = opendir(path);
 	if (directory != NULL) {
-		while (file = readdir(directory)) {
-			filepath = malloc(sizeof(path) + sizeof(file->d_name) + 1);		
-			strcpy(filepath, path);
-			strcat(filepath, file->d_name);
+		while ((file = readdir(directory)) != NULL) {
 			if (file->d_name[0] != '.') {		// Ignore hidden files
-				files[i] = malloc(sizeof(char*));
+				*filepath = *path;
+				strcat(filepath, path);
+				strcat(filepath, file->d_name);
+				printf("%ld,%ld\n", sizeof(file->d_name), sizeof(filepath));
+				files[i] = malloc(sizeof(file->d_name));
 				strcpy(files[i], file->d_name);
 				i++;
+				//free(filepath);
 			}
-			free(filepath);
 		}
 		(void) closedir(directory);
 	} else {
 		perror("Couldn't open the directory");
 	}
 }
+*/
+
+char** GetFiles(const char* path) {
+	DIR *directory;
+	struct dirent *file;
+	char** files = NULL;
+
+	int filecount = getFileCount(path);
+	files = (char**)realloc(files, sizeof(char*) * filecount);
+
+	directory = opendir(path);
+	if (directory == NULL) {
+		perror("Could not open the directory!");
+		return NULL;
+	}
+	
+	int i = 0;
+	while ((file = readdir(directory)) != NULL) {
+		if (file->d_name[0] != '.' && file->d_type == DT_REG) {		// Ignore hidden files
+			char* filepath = strdup(path);
+			strcat(filepath, "/");
+			strcat(filepath, file->d_name);
+			printf("[GetFiles] Found file w/ path \"%s\"\n",filepath);
+			files[i] = realpath(filepath, NULL);
+			i++;
+		}
+	}
+	return files;
+}
+
+/*
+int main() { 
+	char *dir = "../build";
+
+	int file_count = getFileCount(dir);
+	printf("%d\n", file_count);
+	//char* dir[file_count];
+	char** files_list = GetFiles(dir);
+	for (int i = 0; i < file_count; i++) {
+		printf("%s\n", files_list[i]);
+	}
+	free(files_list);
+	return 0;
+}
+*/
