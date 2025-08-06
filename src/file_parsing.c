@@ -78,25 +78,9 @@ char** GetFiles(const char* path) {
 	while ((file = readdir(directory)) != NULL) {
 		if (file->d_name[0] != '.' ) {
 			files[i] = strdup(file->d_name);
-			printf("[GetFiles] Found file w/ path \"%s\"\n",files[i]);
 			i++;
 		}
 	}
 	return files;
 }
 
-/*
-int main() { 
-	char *dir = "./";
-
-	int file_count = getFileCount(dir);
-	printf("%d\n", file_count);
-	//char* dir[file_count];
-	char** files_list = GetFiles(dir);
-	for (int i = 0; i < file_count; i++) {
-		printf("%s\n", files_list[i]);
-	}
-	free(files_list);
-	return 0;
-}
-*/
