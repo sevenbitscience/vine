@@ -20,7 +20,7 @@ int getFileCount(const char* path) {
 	directory = opendir(path);
 	if (directory != NULL) {
 		while ((file = readdir(directory)) != NULL) {
-			if (file->d_name[0] != '.' && file->d_type == DT_REG) {		// Ignore hidden files
+			if (file->d_name[0] != '.') {		// Ignore hidden files
 				fileCount++;
 			}
 		}
@@ -76,12 +76,9 @@ char** GetFiles(const char* path) {
 	
 	int i = 0;
 	while ((file = readdir(directory)) != NULL) {
-		if (file->d_name[0] != '.' && file->d_type == DT_REG) {		// Ignore hidden files
-			char* filepath = strdup(path);
-			strcat(filepath, "/");
-			strcat(filepath, file->d_name);
-			printf("[GetFiles] Found file w/ path \"%s\"\n",filepath);
-			files[i] = realpath(filepath, NULL);
+		if (file->d_name[0] != '.' ) {
+			files[i] = strdup(file->d_name);
+			printf("[GetFiles] Found file w/ path \"%s\"\n",files[i]);
 			i++;
 		}
 	}
@@ -90,7 +87,7 @@ char** GetFiles(const char* path) {
 
 /*
 int main() { 
-	char *dir = "../build";
+	char *dir = "./";
 
 	int file_count = getFileCount(dir);
 	printf("%d\n", file_count);

@@ -22,7 +22,7 @@ int getFileCount(const char* path);
  * Generic function for creating an array of objects in a directory
  *
  * @param path The path to search at
- * @return char** containing absolute filepaths
+ * @return char** containing filenames of the files at path
  */
 char** GetFiles(const char* path);
 
