@@ -10,7 +10,6 @@
 #include <stdio.h>
 
 #define TITLE "vine"
-#define EDITOR "vim"
 
 int main() {
 	// Start ncurses
@@ -19,7 +18,6 @@ int main() {
 	// Initial search directory
 	char* path = "/home/joey";
 
-	//int n_files = getCourseCount(path);
 	while (1) {
 		int n_files;
 		n_files = getFileCount(path);
@@ -48,13 +46,9 @@ int main() {
 		if (isDirectory(selection)) {
 			// The selected item is a directory, so we should
 			// append it to the path, and let the user look in there
-			char* new_path = (char*)malloc(strlen(path) + sizeof(char) + strlen(directory[selection_index]));
 
-			strcat(new_path, path);
-			strcat(new_path, "/");
-			strcat(new_path, directory[selection_index]);
-			path = strdup(new_path);
-			free(new_path);
+			path = strdup(selection);
+			free(selection);
 			refresh();
 		} else {
 			// The selected item is some file, so lets open it up for the user
@@ -66,6 +60,7 @@ int main() {
 
 			free(callEditor);
 			free(directory);
+			free(selection);
 			return 0;
 		}
 	}
