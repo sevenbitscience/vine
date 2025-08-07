@@ -55,11 +55,11 @@ int main() {
 			strcat(new_path, directory[selection_index]);
 			path = strdup(new_path);
 			free(new_path);
+			refresh();
 		} else {
 			// The selected item is some file, so lets open it up for the user
 
-			char* callEditor = strdup(EDITOR);
-			strcat(callEditor, " ");
+			char* callEditor = strdup("$EDITOR ");
 			strcat(callEditor, selection);
 			endwin();
 			system(callEditor);
