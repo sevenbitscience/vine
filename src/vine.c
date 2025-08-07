@@ -17,7 +17,7 @@ int main() {
 	Init();
 
 	// Initial search directory
-	char* path = "./";
+	char* path = "/home/joey";
 
 	//int n_files = getCourseCount(path);
 	while (1) {
@@ -41,18 +41,26 @@ int main() {
 			return 0;
 		}
 
-		if (isDirectory(directory[selection_index])) {
+		char* selection = strdup(path);
+		strcat(selection, "/");
+		strcat(selection, directory[selection_index]);
+
+		if (isDirectory(selection)) {
 			// The selected item is a directory, so we should
 			// append it to the path, and let the user look in there
-			char* next_dir = strdup(path);
-			strcat(next_dir, directory[selection_index]);
-			path = next_dir;
+			char* new_path = (char*)malloc(strlen(path) + sizeof(char) + strlen(directory[selection_index]));
+
+			strcat(new_path, path);
+			strcat(new_path, "/");
+			strcat(new_path, directory[selection_index]);
+			path = strdup(new_path);
+			free(new_path);
 		} else {
 			// The selected item is some file, so lets open it up for the user
 
 			char* callEditor = strdup(EDITOR);
 			strcat(callEditor, " ");
-			strcat(callEditor, directory[selection_index]);
+			strcat(callEditor, selection);
 			endwin();
 			system(callEditor);
 
