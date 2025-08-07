@@ -48,6 +48,7 @@ int main() {
 			// append it to the path, and let the user look in there
 
 			path = strdup(selection);
+			clear();
 			free(selection);
 			refresh();
 		} else {
