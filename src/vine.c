@@ -39,7 +39,11 @@ int main() {
 			return 0;
 		}
 
-		char* selection = strdup(path);
+		char* selection = (char*)malloc(strlen(path) + 
+				strlen(directory[selection_index]) +
+				sizeof(char)
+				);
+		strcat(selection, path);
 		strcat(selection, "/");
 		strcat(selection, directory[selection_index]);
 
@@ -49,6 +53,7 @@ int main() {
 
 			path = strdup(selection);
 			clear();
+			//drawCenteredText(selection, 10);
 			free(selection);
 			refresh();
 		} else {
