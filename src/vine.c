@@ -11,12 +11,16 @@
 
 #define TITLE "vine"
 
-int main() {
+int main(int argc, char *argv[]) {
+
+	char* path = "./";
+	// Get the search directory
+	if (argc > 1 && isDirectory(argv[1])) {
+		path = strdup(argv[1]);
+	}
+
 	// Start ncurses
 	Init();
-
-	// Initial search directory
-	char* path = "/home/joey";
 
 	while (1) {
 		int n_files;
