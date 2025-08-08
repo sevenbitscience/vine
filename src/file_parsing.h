@@ -26,4 +26,9 @@ int getFileCount(const char* path);
  */
 char** GetFiles(const char* path);
 
+/**
+ * Concat parts of a file path
+ */
+char* concatPath(char* path, char* item);
+
 #endif

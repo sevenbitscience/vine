@@ -43,13 +43,7 @@ int main(int argc, char *argv[]) {
 			return 0;
 		}
 
-		char* selection = (char*)malloc(strlen(path) + 
-				strlen(directory[selection_index]) +
-				sizeof(char)
-				);
-		strcat(selection, path);
-		strcat(selection, "/");
-		strcat(selection, directory[selection_index]);
+		char* selection = concatPath(path, directory[selection_index]);
 
 		if (isDirectory(selection)) {
 			// The selected item is a directory, so we should
@@ -76,3 +70,4 @@ int main(int argc, char *argv[]) {
 	}
 	return 0;
 }
+

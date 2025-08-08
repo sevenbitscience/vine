@@ -84,3 +84,18 @@ char** GetFiles(const char* path) {
 	return files;
 }
 
+char* concatPath(char* path, char* item) {
+	char* out = NULL;
+	if (path[(strlen(path)/sizeof(char))-1] == '/') {
+		out = (char*)malloc(strlen(path) + strlen(item));
+		strcat(out, path);
+		strcat(out, item);
+	} else {
+		out = (char*)malloc(strlen(path) + strlen(item) + sizeof(char));
+		//sprintf(out, "%s/%s", path, item);
+		strcat(out, path);
+		strcat(out, "/");
+		strcat(out, item);
+	}
+	return out;
+}
