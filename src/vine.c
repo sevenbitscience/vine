@@ -19,51 +19,68 @@ int main(int argc, char *argv[]) {
 		path = strdup(argv[1]);
 	}
 
+	int n_files;
+	char** directory = NULL;
+	int selection_index;
+	char* selection = NULL;
+
 	// Start ncurses
 	Init();
 
 	while (1) {
-		int n_files;
 		n_files = getFileCount(path);
 
 		// Create the array of classes
-		char** directory = GetFiles(path);
+		if (directory != NULL) {
+			free(directory);
+
+		}
+		directory = GetFiles(path);
+		if (directory == NULL) {
+			endwin();
+			perror("Fatal errror, could not open selected directory");
+			return -1;
+		}
 
 		drawCenteredText(TITLE, 3);
 		DrawFiles(directory, n_files, 0, 5, 2);
 		refresh();
 
 		// Show user the selection menu to pick a file
-		int selection_index = SelectMenu(directory, n_files);
+		selection_index = SelectMenu(directory, n_files);
 
 		// If the user wants to quit
 		if (selection_index == -1) {
 			free(directory);
+			if (selection != NULL) {
+				free(selection);
+			}
 			endwin();
 			return 0;
 		}
 
-		char* selection = concatPath(path, directory[selection_index]);
+		if (selection != NULL) {
+			free(selection);
+		}
+		selection = concatPath(path, directory[selection_index]);
 
 		if (isDirectory(selection)) {
 			// The selected item is a directory, so we should
 			// append it to the path, and let the user look in there
-
+			path = (char*)malloc(sizeof(char) * strlen(selection));
 			path = strdup(selection);
 			clear();
 			//drawCenteredText(selection, 10);
-			free(selection);
 			refresh();
 		} else {
 			// The selected item is some file, so lets open it up for the user
-
-			char* callEditor = strdup("$EDITOR ");
-			strcat(callEditor, selection);
+			char* callEditor = (char*)malloc(sizeof(char)* (12 + strlen(selection)));
+			sprintf(callEditor, "$EDITOR \"%s\"", selection);
+			
 			endwin();
 			system(callEditor);
 
 			free(callEditor);
-			free(directory);
 			free(selection);
 			return 0;
 		}

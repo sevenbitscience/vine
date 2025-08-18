@@ -86,16 +86,12 @@ char** GetFiles(const char* path) {
 
 char* concatPath(char* path, char* item) {
 	char* out = NULL;
-	if (path[(strlen(path)/sizeof(char))-1] == '/') {
-		out = (char*)malloc(strlen(path) + strlen(item));
-		strcat(out, path);
-		strcat(out, item);
-	} else {
-		out = (char*)malloc(strlen(path) + strlen(item) + sizeof(char));
-		//sprintf(out, "%s/%s", path, item);
-		strcat(out, path);
-		strcat(out, "/");
-		strcat(out, item);
+	if (path[(strlen(path)/sizeof(char))-1] == '/') {		// Does the path end in a forward slash?
+		out = (char*)malloc(sizeof(char) * (strlen(path) + strlen(item) + 0));
+		sprintf(out, "%s%s", path, item);
+	} else {									// We need to add a forward slash to the path
+		out = (char*)malloc(sizeof(char) * (strlen(path) + strlen(item) + 1));
+		sprintf(out, "%s/%s", path, item);
 	}
 	return out;
 }
