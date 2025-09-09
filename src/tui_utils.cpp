@@ -4,9 +4,6 @@
 
 #include "tui_utils.h"
 
-#include <ncurses.h>
-#include <string.h>
-
 void Init() {
 	// Initiallize ncuses
 	initscr();
@@ -22,12 +19,12 @@ void Init() {
 		init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	}
 }
-void drawCenteredText(char* string, int y) {
-	int x_cor = (COLS/2)-(strlen(string)/2);
-	mvaddstr(y, x_cor, string); 
+void drawCenteredText(std::string string, int y) {
+	int x_cor = (COLS/2)-((string.length())/2);
+	mvaddstr(y, x_cor, string.c_str()); 
 }
 
-void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot) {
+void DrawFiles(std::string files[], int n_files, int selected, int p_top, int p_bot) {
 	int y_height;
 
 	for (int i = 0; i < n_files; i++) {
@@ -47,7 +44,7 @@ void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot) {
 	}
 }
 
-int SelectMenu(char* items[], int size) {
+int SelectMenu(std::string items[], int size) {
 	int selected_item = 0;
 	int reload_required = 1;
 

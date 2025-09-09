@@ -2,6 +2,9 @@
 #define TUI_UTILS_H
 
 #include <ncurses.h>
+#include <string>
+#include <vector>
+#include <filesystem>
 
 /**
  * Initiallizes ncurses settings
@@ -17,7 +20,7 @@ void Init();
  * @param n_files The number of files to be listed
  * @param selected The index of the selected file
  */
-void DrawFiles(char* files[], int n_files, int selected, int p_top, int p_bot);
+void DrawFiles(std::vector<std::filesystem::directory_entry>, int selected, int p_top, int p_bot);
 
 /**
  * Draw some text, horizontally centered
@@ -37,6 +40,6 @@ void drawCenteredText(char* string, int y);
  * @param size The number of elements in the array
  * @return the index of the item that was selected
  */
-int SelectMenu(char* items[], int size);
+int SelectMenu(std::vector<char*> items, int size);
 
 #endif
