@@ -1,13 +1,11 @@
 #include "file_parsing.h"
+#include <filesystem>
+#include <stdexcept>
 
-int isDirectory(const char *path) {
-   struct stat statbuf;
-   if (stat(path, &statbuf) != 0)
-       return 0;
-   return S_ISDIR(statbuf.st_mode);
-}
+namespace fs = std::filesystem;
 
-int getFileCount(const char* path) {
+/*
+int getFileCount(std::string path) {
 	DIR *directory;						// The directory we are searching in
 	struct dirent *file;				// A directory entry
 	int fileCount = 0;
@@ -26,60 +24,27 @@ int getFileCount(const char* path) {
 
 	return fileCount;
 }
-
-/*
-void GetFiles(char* files[], char* path) {
-	DIR *directory;
-	struct dirent *file;
-	int i = 0;
-	char* filepath;
-
-	directory = opendir(path);
-	if (directory != NULL) {
-		while ((file = readdir(directory)) != NULL) {
-			if (file->d_name[0] != '.') {		// Ignore hidden files
-				*filepath = *path;
-				strcat(filepath, path);
-				strcat(filepath, file->d_name);
-				printf("%ld,%ld\n", sizeof(file->d_name), sizeof(filepath));
-				files[i] = malloc(sizeof(file->d_name));
-				strcpy(files[i], file->d_name);
-				i++;
-				//free(filepath);
-			}
-		}
-		(void) closedir(directory);
-	} else {
-		perror("Couldn't open the directory");
-	}
-}
 */
 
-char** GetFiles(const char* path) {
-	DIR *directory;
-	struct dirent *file;
-	char** files = NULL;
+std::vector<fs::directory_entry> GetFiles(std::string path) {
+	std::vector<fs::directory_entry> files;
 
-	int filecount = getFileCount(path);
-	files = (char**)realloc(files, sizeof(char*) * filecount);
+	fs::directory_entry path_dirent{fs::path{path}};
 
-	directory = opendir(path);
-	if (directory == NULL) {
-		perror("Could not open the directory!");
-		return NULL;
-	}
-	
-	int i = 0;
-	while ((file = readdir(directory)) != NULL) {
-		if (file->d_name[0] != '.' ) {
-			files[i] = strdup(file->d_name);
-			i++;
-		}
+	if (!path_dirent.exists()) 
+		throw std::invalid_argument("Directory path does not exist!");
+
+	if (!path_dirent.is_directory()) 
+		throw std::invalid_argument("Directory path does not refer to a directory!");
+
+	for (const auto& dirent : fs::directory_iterator(path)) {
+		files.push_back(dirent);
 	}
 	return files;
 }
 
-char* concatPath(char* path, char* item) {
+/*
+char* concatPath(std::string path, std::string item) {
 	char* out = NULL;
 	if (path[(strlen(path)/sizeof(char))-1] == '/') {		// Does the path end in a forward slash?
 		out = (char*)malloc(sizeof(char) * (strlen(path) + strlen(item) + 0));
@@ -90,3 +55,4 @@ char* concatPath(char* path, char* item) {
 	}
 	return out;
 }
+*/

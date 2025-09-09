@@ -1,26 +1,18 @@
 #ifndef FILE_PARSING_H
 #define FILE_PARSING_H
 
-#include <stdio.h>
-#include <dirent.h>
+#include <iostream>
+#include <stdexcept>
 #include <string>
-#include <stdlib.h>
-#include <sys/stat.h>
-
-/**
- * Checks if the object at a path is a directory
- *
- * @param path Path to the thing to check 
- * @return Returns 1 if it is a directory, otherwise 0
- */
-int isDirectory(const char *path);
+#include <vector>
+#include <filesystem>
 
 /**
  * Counts the number of files and directories in a directory
  *
  * @param path Path to the directory to search in
  */
-int getFileCount(const char* path);
+int getFileCount(std::string path);
 
 /**
  * Create an array of file or directory names
@@ -30,11 +22,11 @@ int getFileCount(const char* path);
  * @param path The path to search at
  * @return char** containing filenames of the files at path
  */
-char** GetFiles(const char* path);
+std::vector<std::filesystem::path> GetFiles(std::filesystem::path path);
 
 /**
  * Concat parts of a file path
  */
-char* concatPath(char* path, char* item);
+char* concatPath(std::string path, std::string item);
 
 #endif
