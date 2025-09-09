@@ -1,6 +1,12 @@
 #ifndef FILE_PARSING_H
 #define FILE_PARSING_H
 
+#include <stdio.h>
+#include <dirent.h>
+#include <string>
+#include <stdlib.h>
+#include <sys/stat.h>
+
 /**
  * Checks if the object at a path is a directory
  *
