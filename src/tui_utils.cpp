@@ -3,6 +3,10 @@
  */
 
 #include "tui_utils.h"
+#include <filesystem>
+#include <vector>
+
+namespace fs = std::filesystem;
 
 void Init() {
 	// Initiallize ncuses
@@ -24,10 +28,10 @@ void drawCenteredText(std::string string, int y) {
 	mvaddstr(y, x_cor, string.c_str()); 
 }
 
-void DrawFiles(std::string files[], int n_files, int selected, int p_top, int p_bot) {
+void drawFileList(std::vector<fs::directory_entry> files, int selected, int p_top, int p_bot) {
 	int y_height;
 
-	for (int i = 0; i < n_files; i++) {
+	for (int i = 0; i < files.size(); i++) {
 		y_height = i + p_top;
 		if (y_height > (LINES - p_bot)) {
 			break;
@@ -36,7 +40,7 @@ void DrawFiles(std::string files[], int n_files, int selected, int p_top, int p_
 		if (i == selected) {
 			attrset(COLOR_PAIR(2));
 		}
-		drawCenteredText(files[i], y_height);
+		drawCenteredText(files[i].path(), y_height);
 		if (i == selected) {
 			attrset(COLOR_PAIR(1));
 		}
@@ -44,9 +48,12 @@ void DrawFiles(std::string files[], int n_files, int selected, int p_top, int p_
 	}
 }
 
-int SelectMenu(std::string items[], int size) {
+int FileMenu(std::vector<fs::directory_entry> items) {
 	int selected_item = 0;
-	int reload_required = 1;
+	int reload_required = 0;
+
+	drawFileList(items, selected_item, 5, 2);
+	refresh();
 
 	for (;;) {
 		// Wait for user input
@@ -59,7 +66,7 @@ int SelectMenu(std::string items[], int size) {
 				return -1;
 				break;
 			case 'j':
-				if (selected_item < size-1) {
+				if (selected_item < items.size()-1) {
 					selected_item = (selected_item + 1);
 					reload_required++;
 				}
@@ -74,7 +81,7 @@ int SelectMenu(std::string items[], int size) {
 				return selected_item;
 		}
 		if (reload_required) {
-			DrawFiles(items, size, selected_item, 5, 2);
+			drawFileList(items, selected_item, 5, 2);
 			refresh();
 			reload_required = 0;
 		}

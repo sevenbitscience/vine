@@ -20,7 +20,7 @@ void Init();
  * @param n_files The number of files to be listed
  * @param selected The index of the selected file
  */
-void DrawFiles(std::vector<std::filesystem::directory_entry>, int selected, int p_top, int p_bot);
+void drawFileList(std::vector<std::filesystem::directory_entry> files, int selected, int p_top, int p_bot);
 
 /**
  * Draw some text, horizontally centered
@@ -31,15 +31,14 @@ void DrawFiles(std::vector<std::filesystem::directory_entry>, int selected, int 
 void drawCenteredText(char* string, int y);
 
 /**
- * Show menu for selecting an item from a list
+ * Show menu for selecting a file from a list
  *
  *	Will return the index of the course a user wants to select
  *	Returns -1 if the user wishes to quit the program 
  *
  * @param courses The array of items
- * @param size The number of elements in the array
  * @return the index of the item that was selected
  */
-int SelectMenu(std::vector<char*> items, int size);
+int FileMenu(std::vector<std::filesystem::directory_entry> items);
 
 #endif
