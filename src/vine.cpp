@@ -7,79 +7,63 @@
 #include "file_parsing.h"
 #include "tui_utils.h"
 
-#define TITLE "vine"
+const std::string TITLE = "vine";
+
+namespace fs = std::filesystem;
 
 int main(int argc, char *argv[]) {
+	fs::directory_entry path;
 
-	char* path = "./";
-	// Get the search directory
-	if (argc > 1 && isDirectory(argv[1])) {
-		path = strdup(argv[1]);
+	// Get directory from path if it exists
+	if (argc > 1) {
+		path = fs::directory_entry(fs::path(argv[1]));
+		// Make sure that argv[1] is valid input
+		if (!path.exists() || !path.is_directory())
+			path = fs::directory_entry(fs::path("~/"));
+	} else {
+		path = fs::directory_entry(fs::path("./"));
 	}
 
-	int n_files;
-	char** directory = NULL;
+	std::vector<fs::directory_entry> directory;
 	int selection_index;
-	char* selection = NULL;
+	fs::directory_entry selection;
 
 	// Start ncurses
 	Init();
 
 	while (1) {
-		n_files = getFileCount(path);
-
 		// Create the array of classes
-		if (directory != NULL) {
-			free(directory);
-
-		}
-		directory = GetFiles(path);
-		if (directory == NULL) {
-			endwin();
-			perror("Fatal errror, could not open selected directory");
-			return -1;
-		}
+		directory = GetFiles(path.path());
 
 		drawCenteredText(TITLE, 3);
-		DrawFiles(directory, n_files, 0, 5, 2);
-		refresh();
 
 		// Show user the selection menu to pick a file
-		selection_index = SelectMenu(directory, n_files);
+		selection_index = FileMenu(directory);
 
 		// If the user wants to quit
 		if (selection_index == -1) {
-			free(directory);
-			if (selection != NULL) {
-				free(selection);
-			}
 			endwin();
 			return 0;
 		}
 
-		if (selection != NULL) {
-			free(selection);
-		}
-		selection = concatPath(path, directory[selection_index]);
+		selection = directory[selection_index];
 
-		if (isDirectory(selection)) {
+		if (selection.is_directory()) {
 			// The selected item is a directory, so we should
 			// append it to the path, and let the user look in there
-			path = (char*)malloc(sizeof(char) * strlen(selection));
-			path = strdup(selection);
+			path = selection;
 			clear();
 			//drawCenteredText(selection, 10);
 			refresh();
 		} else {
 			// The selected item is some file, so lets open it up for the user
-			char* callEditor = (char*)malloc(sizeof(char)* (12 + strlen(selection)));
-			sprintf(callEditor, "$EDITOR \"%s\"", selection);
+			std::string callEditor = "$EDITOR \"";
+			callEditor.append(selection.path());
+			callEditor.append("\"\n");
 			
 			endwin();
-			system(callEditor);
+			std::system(callEditor.c_str());
 
-			free(callEditor);
-			free(selection);
 			return 0;
 		}
 	}
