@@ -21,6 +21,6 @@ int getFileCount(std::string path);
  * @param path The path to search at.
  * @return char** containing filenames of the files at path.
  */
-std::vector<std::filesystem::path> GetFiles(std::filesystem::path path);
+std::vector<std::filesystem::directory_entry> GetFiles(std::filesystem::path path);
 
 #endif
