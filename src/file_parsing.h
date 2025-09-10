@@ -1,10 +1,9 @@
 #ifndef FILE_PARSING_H
 #define FILE_PARSING_H
 
-#include <stdexcept>
-#include <string>
-#include <vector>
 #include <filesystem>
+
+#include "utils.h"
 
 /**
  * Counts the number of files and directories in a directory.
