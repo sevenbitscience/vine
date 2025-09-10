@@ -27,7 +27,7 @@ void drawFileList(std::vector<std::filesystem::directory_entry> files, int selec
  * @param string The text to be displayed
  * @param y The vertical location for the text
  */
-void drawCenteredText(char* string, int y);
+void drawCenteredText(std::string, int y);
 
 /**
  * Show menu for selecting a file from a list
