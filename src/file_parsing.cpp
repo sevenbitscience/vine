@@ -18,7 +18,7 @@ int getFileCount(std::string path) {
 	return count;
 }
 
-std::vector<fs::directory_entry> GetFiles(std::string path) {
+std::vector<fs::directory_entry> GetFiles(std::filesystem::path path) {
 	fs::directory_entry path_dirent{fs::path{path}};
 
 	if (!path_dirent.exists()) 
