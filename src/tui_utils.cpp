@@ -3,8 +3,6 @@
  */
 
 #include "tui_utils.h"
-#include <filesystem>
-#include <vector>
 
 namespace fs = std::filesystem;
 
