@@ -26,10 +26,10 @@ void drawCenteredText(std::string string, int y) {
 	mvaddstr(y, x_cor, string.c_str()); 
 }
 
-void drawFileList(std::vector<fs::directory_entry> files, int selected, int p_top, int p_bot) {
+void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected, int p_top, int p_bot) {
 	int y_height;
 
-	for (int i = 0; i < files.size(); i++) {
+	for (unsigned int i = 0; i < files.size(); i++) {
 		y_height = i + p_top;
 		if (y_height > (LINES - p_bot)) {
 			break;
@@ -47,7 +47,7 @@ void drawFileList(std::vector<fs::directory_entry> files, int selected, int p_to
 }
 
 int FileMenu(std::vector<fs::directory_entry> items) {
-	int selected_item = 0;
+	unsigned int selected_item = 0;
 	int reload_required = 0;
 
 	drawFileList(items, selected_item, 5, 2);
