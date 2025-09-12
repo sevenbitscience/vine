@@ -30,19 +30,25 @@ void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected,
 	int y_height;
 
 	for (unsigned int i = 0; i < files.size(); i++) {
+		// Figure out where the line needs to go
 		y_height = i + p_top;
-		if (y_height > (LINES - p_bot)) {
+		// If the line is too far down, give up and don't draw it.
+		if (y_height > (LINES - p_bot))
 			break;
-		}
 
-		if (i == selected) {
+		// Change color if we are drawing the selected item
+		if (i == selected) 
 			attrset(COLOR_PAIR(2));
-		}
-		drawCenteredText(files[i].path(), y_height);
-		if (i == selected) {
-			attrset(COLOR_PAIR(1));
-		}
 
+		// Create a string for the filename
+		std::string formatted_filename = files[i].path().filename();
+
+		// Draw the filename
+		drawCenteredText(formatted_filename, y_height);
+
+		// If we changed the colors, switch back to the defaults
+		if (i == selected)
+			attrset(COLOR_PAIR(1));
 	}
 }
 
