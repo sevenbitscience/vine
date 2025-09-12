@@ -11,7 +11,7 @@ tui_utils.o: ./src/tui_utils.h ./src/tui_utils.cpp
 file_parsing.o: ./src/file_parsing.h ./src/file_parsing.cpp 
 	$(CC) $(CFLAGS) -c ./src/file_parsing.cpp
 
-vine.o: ./src/vine.cpp tui_utils.o file_parsing.o 
+vine.o: ./src/vine.cpp 
 	$(CC) $(CFLAGS) -c ./src/vine.cpp
 
 clean:
