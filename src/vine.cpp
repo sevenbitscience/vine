@@ -19,9 +19,9 @@ int main(int argc, char *argv[]) {
 		path = fs::directory_entry(fs::path(argv[1]));
 		// Make sure that argv[1] is valid input
 		if (!path.exists() || !path.is_directory())
-			path = fs::directory_entry(fs::path("~/"));
+			path = fs::directory_entry(fs::path("./"));
 	} else {
-		path = fs::directory_entry(fs::path("~/"));
+		path = fs::directory_entry(fs::path("./"));
 	}
 
 	std::vector<fs::directory_entry> directory;
