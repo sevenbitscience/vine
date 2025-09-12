@@ -29,9 +29,12 @@ void drawCenteredText(std::string string, int y) {
 void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected, int p_top, int p_bot) {
 	int y_height;
 
+	// Draw the name of the directory we are currently in
+	drawCenteredText(files[0].path().parent_path(), p_top - 1);
+
 	for (unsigned int i = 0; i < files.size(); i++) {
 		// Figure out where the line needs to go
-		y_height = i + p_top;
+		y_height = i + p_top + 1;
 		// If the line is too far down, give up and don't draw it.
 		if (y_height > (LINES - p_bot))
 			break;
