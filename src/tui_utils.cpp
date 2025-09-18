@@ -7,6 +7,8 @@
 
 namespace fs = std::filesystem;
 
+std::string PAGE_HINT = "...";
+
 void Init() {
 	// Initiallize ncuses
 	initscr();
@@ -23,7 +25,7 @@ void Init() {
 	}
 }
 
-void drawCenteredText(std::string &text, int &y) {
+void drawCenteredText(std::string &text, int y) {
 	int x_cor = (COLS/2)-((text.length())/2);
 	mvaddstr(y, x_cor, text.c_str()); 
 }
@@ -32,7 +34,9 @@ void drawFileList(std::vector<fs::directory_entry> &files, unsigned int &selecte
 	int y_height;
 
 	// Draw the name of the directory we are currently in
-	drawCenteredText(files[0].path().parent_path(), p_top - 1);
+	std::string path = files[0].path().parent_path();
+	int directory_position = p_top - 1;
+	drawCenteredText(path, directory_position);
 
 	for (unsigned int i = l_start; i < l_end; i++) {
 		// Figure out where the line needs to go
@@ -54,10 +58,12 @@ void drawFileList(std::vector<fs::directory_entry> &files, unsigned int &selecte
 	}
 
 	if (l_start != 0)
-		drawCenteredText("...", p_top);
+		drawCenteredText(PAGE_HINT, p_top);
 
-	if (l_end != files.size())
-		drawCenteredText("...", (l_end - l_start) + p_top + 1);
+	if (l_end != files.size()) {
+		int tail_position = (l_end - l_start) + p_top + 1;
+		drawCenteredText(PAGE_HINT, tail_position);
+	}
 }
 
 int FileMenu(std::vector<fs::directory_entry> &items, unsigned int &paging) {

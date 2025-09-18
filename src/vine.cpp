@@ -28,6 +28,9 @@ int main(int argc, char *argv[]) {
 	int selection_index;
 	fs::directory_entry selection;
 
+	std::string title = "Vine";
+	unsigned int paging_size = 15;
+
 	// Start ncurses
 	Init();
 
@@ -35,10 +38,10 @@ int main(int argc, char *argv[]) {
 		// Create the array of classes
 		directory = GetFiles(path);
 
-		drawCenteredText(TITLE, 3);
+		drawCenteredText(title, 3);
 
 		// Show user the selection menu to pick a file
-		selection_index = FileMenu(directory, 15);
+		selection_index = FileMenu(directory, paging_size);
 
 		// If the user wants to quit
 		if (selection_index == -1) {

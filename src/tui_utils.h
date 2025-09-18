@@ -27,7 +27,7 @@ void drawFileList(std::vector<std::filesystem::directory_entry> &files, int &sel
  * @param string The text to be displayed
  * @param y The vertical location for the text
  */
-void drawCenteredText(std::string &text, int &y);
+void drawCenteredText(std::string &text, int y);
 
 /**
  * Show menu for selecting a file from a list
@@ -39,6 +39,6 @@ void drawCenteredText(std::string &text, int &y);
  * @param paging The number of items to list per page
  * @return the index of the item that was selected
  */
-int FileMenu(std::vector<std::filesystem::directory_entry> items, unsigned int &paging);
+int FileMenu(std::vector<std::filesystem::directory_entry> &items, unsigned int &paging);
 
 #endif
