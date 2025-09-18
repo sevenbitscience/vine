@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 
 	while (1) {
 		// Create the array of classes
-		directory = GetFiles(path.path());
+		directory = GetFiles(path);
 
 		drawCenteredText(TITLE, 3);
 

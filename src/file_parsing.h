@@ -10,7 +10,7 @@
  *
  * @param path Path to the directory to search in
  */
-int getFileCount(std::string path);
+int getFileCount(std::string &path);
 
 /**
  * Create an array of file or directory names.
@@ -20,6 +20,6 @@ int getFileCount(std::string path);
  * @param path The path to search at.
  * @return char** containing filenames of the files at path.
  */
-std::vector<std::filesystem::directory_entry> GetFiles(std::filesystem::path path);
+std::vector<std::filesystem::directory_entry> GetFiles(std::filesystem::directory_entry &path);
 
 #endif
