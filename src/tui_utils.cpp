@@ -3,6 +3,7 @@
  */
 
 #include "tui_utils.h"
+#include <string>
 
 namespace fs = std::filesystem;
 
@@ -26,15 +27,15 @@ void drawCenteredText(std::string string, int y) {
 	mvaddstr(y, x_cor, string.c_str()); 
 }
 
-void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected, int p_top, int p_bot) {
+void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected, int p_top, int p_bot, unsigned int l_start, unsigned int l_end) {
 	int y_height;
 
 	// Draw the name of the directory we are currently in
 	drawCenteredText(files[0].path().parent_path(), p_top - 1);
 
-	for (unsigned int i = 0; i < files.size(); i++) {
+	for (unsigned int i = l_start; i < l_end; i++) {
 		// Figure out where the line needs to go
-		y_height = i + p_top + 1;
+		y_height = i + p_top + 1 - l_start;
 		// If the line is too far down, give up and don't draw it.
 		if (y_height > (LINES - p_bot))
 			break;
@@ -53,13 +54,22 @@ void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected,
 		if (i == selected)
 			attrset(COLOR_PAIR(1));
 	}
+
+	if (l_start != 0)
+		drawCenteredText("...", p_top);
+
+	if (l_end != files.size())
+		drawCenteredText("...", (l_end - l_start) + p_top + 1);
 }
 
-int FileMenu(std::vector<fs::directory_entry> items) {
+int FileMenu(std::vector<fs::directory_entry> items, unsigned int paging) {
 	unsigned int selected_item = 0;
 	int reload_required = 0;
+	unsigned int page = 0;
+	unsigned int start = 0;
+	unsigned int end = paging;
 
-	drawFileList(items, selected_item, 5, 2);
+	drawFileList(items, selected_item, 5, 2, start, end);
 	refresh();
 
 	for (;;) {
@@ -74,13 +84,15 @@ int FileMenu(std::vector<fs::directory_entry> items) {
 				break;
 			case 'j':
 				if (selected_item < items.size()-1) {
-					selected_item = (selected_item + 1);
+					selected_item++;
+					if (selected_item % paging == 0) page++;
 					reload_required++;
 				}
 				break;
 			case 'k':
 				if (selected_item > 0) {
-					selected_item = (selected_item - 1);
+					selected_item--;
+					if (selected_item % paging == paging-1) page--;
 					reload_required++;
 				}
 				break;
@@ -88,7 +100,12 @@ int FileMenu(std::vector<fs::directory_entry> items) {
 				return selected_item;
 		}
 		if (reload_required) {
-			drawFileList(items, selected_item, 5, 2);
+			start = page*paging;
+			end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
+			
+			clear();
+			drawFileList(items, selected_item, 5, 2, start, end);
+
 			refresh();
 			reload_required = 0;
 		}

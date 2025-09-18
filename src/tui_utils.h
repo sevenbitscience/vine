@@ -19,7 +19,7 @@ void Init();
  * @param n_files The number of files to be listed
  * @param selected The index of the selected file
  */
-void drawFileList(std::vector<std::filesystem::directory_entry> files, int selected, int p_top, int p_bot);
+void drawFileList(std::vector<std::filesystem::directory_entry> files, int selected, int p_top, int p_bot, unsigned int l_start, unsigned int l_end);
 
 /**
  * Draw some text, horizontally centered
@@ -36,8 +36,9 @@ void drawCenteredText(std::string, int y);
  *	Returns -1 if the user wishes to quit the program 
  *
  * @param courses The array of items
+ * @param paging The number of items to list per page
  * @return the index of the item that was selected
  */
-int FileMenu(std::vector<std::filesystem::directory_entry> items);
+int FileMenu(std::vector<std::filesystem::directory_entry> items, unsigned int paging);
 
 #endif

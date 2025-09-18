@@ -38,7 +38,7 @@ int main(int argc, char *argv[]) {
 		drawCenteredText(TITLE, 3);
 
 		// Show user the selection menu to pick a file
-		selection_index = FileMenu(directory);
+		selection_index = FileMenu(directory, 15);
 
 		// If the user wants to quit
 		if (selection_index == -1) {
