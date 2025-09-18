@@ -22,12 +22,13 @@ void Init() {
 		init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	}
 }
-void drawCenteredText(std::string string, int y) {
-	int x_cor = (COLS/2)-((string.length())/2);
-	mvaddstr(y, x_cor, string.c_str()); 
+
+void drawCenteredText(std::string &text, int &y) {
+	int x_cor = (COLS/2)-((text.length())/2);
+	mvaddstr(y, x_cor, text.c_str()); 
 }
 
-void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected, int p_top, int p_bot, unsigned int l_start, unsigned int l_end) {
+void drawFileList(std::vector<fs::directory_entry> &files, unsigned int &selected, int p_top, unsigned int &l_start, unsigned int &l_end) {
 	int y_height;
 
 	// Draw the name of the directory we are currently in
@@ -36,9 +37,6 @@ void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected,
 	for (unsigned int i = l_start; i < l_end; i++) {
 		// Figure out where the line needs to go
 		y_height = i + p_top + 1 - l_start;
-		// If the line is too far down, give up and don't draw it.
-		if (y_height > (LINES - p_bot))
-			break;
 
 		// Change color if we are drawing the selected item
 		if (i == selected) 
@@ -62,14 +60,14 @@ void drawFileList(std::vector<fs::directory_entry> files, unsigned int selected,
 		drawCenteredText("...", (l_end - l_start) + p_top + 1);
 }
 
-int FileMenu(std::vector<fs::directory_entry> items, unsigned int paging) {
+int FileMenu(std::vector<fs::directory_entry> &items, unsigned int &paging) {
 	unsigned int selected_item = 0;
 	int reload_required = 0;
 	unsigned int page = 0;
 	unsigned int start = 0;
 	unsigned int end = paging;
 
-	drawFileList(items, selected_item, 5, 2, start, end);
+	drawFileList(items, selected_item, 5, start, end);
 	refresh();
 
 	for (;;) {
@@ -104,7 +102,7 @@ int FileMenu(std::vector<fs::directory_entry> items, unsigned int paging) {
 			end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
 			
 			clear();
-			drawFileList(items, selected_item, 5, 2, start, end);
+			drawFileList(items, selected_item, 5, start, end);
 
 			refresh();
 			reload_required = 0;
