@@ -71,7 +71,7 @@ int FileMenu(std::vector<fs::directory_entry> &items, unsigned int &paging) {
 	int reload_required = 0;
 	unsigned int page = 0;
 	unsigned int start = 0;
-	unsigned int end = paging;
+	unsigned int end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
 
 	drawFileList(items, selected_item, 5, start, end);
 	refresh();
