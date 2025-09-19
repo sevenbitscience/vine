@@ -7,8 +7,6 @@
 #include "file_parsing.h"
 #include "tui_utils.h"
 
-const std::string TITLE = "vine";
-
 namespace fs = std::filesystem;
 
 int main(int argc, char *argv[]) {
@@ -38,10 +36,8 @@ int main(int argc, char *argv[]) {
 		// Create the array of classes
 		directory = GetFiles(path);
 
-		drawCenteredText(title, 3);
-
 		// Show user the selection menu to pick a file
-		selection_index = FileMenu(directory, paging_size);
+		selection_index = FileMenu(directory, title, paging_size);
 
 		// If the user wants to quit
 		if (selection_index == -1) {
@@ -56,7 +52,6 @@ int main(int argc, char *argv[]) {
 			// append it to the path, and let the user look in there
 			path = selection;
 			clear();
-			//drawCenteredText(selection, 10);
 			refresh();
 		} else {
 			// The selected item is some file, so lets open it up for the user

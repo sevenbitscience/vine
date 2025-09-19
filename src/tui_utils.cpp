@@ -66,13 +66,14 @@ void drawFileList(std::vector<fs::directory_entry> &files, unsigned int &selecte
 	}
 }
 
-int FileMenu(std::vector<fs::directory_entry> &items, unsigned int &paging) {
+int FileMenu(std::vector<fs::directory_entry> &items, std::string &title, unsigned int &paging) {
 	unsigned int selected_item = 0;
 	int reload_required = 0;
 	unsigned int page = 0;
 	unsigned int start = 0;
 	unsigned int end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
 
+	drawCenteredText(title, 3);
 	drawFileList(items, selected_item, 5, start, end);
 	refresh();
 
@@ -108,6 +109,7 @@ int FileMenu(std::vector<fs::directory_entry> &items, unsigned int &paging) {
 			end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
 			
 			clear();
+			drawCenteredText(title, 3);
 			drawFileList(items, selected_item, 5, start, end);
 
 			refresh();

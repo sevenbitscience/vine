@@ -39,6 +39,6 @@ void drawCenteredText(std::string &text, int y);
  * @param paging The number of items to list per page
  * @return the index of the item that was selected
  */
-int FileMenu(std::vector<std::filesystem::directory_entry> &items, unsigned int &paging);
+int FileMenu(std::vector<std::filesystem::directory_entry> &items, std::string &title, unsigned int &paging);
 
 #endif
