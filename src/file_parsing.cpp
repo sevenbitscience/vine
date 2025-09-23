@@ -1,5 +1,4 @@
 #include "file_parsing.h"
-#include <filesystem>
 
 namespace fs = std::filesystem;
 

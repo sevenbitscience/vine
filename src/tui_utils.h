@@ -2,6 +2,7 @@
 #define TUI_UTILS_H
 
 #include <ncurses.h>
+#include <string>
 
 #include "utils.h"
 
