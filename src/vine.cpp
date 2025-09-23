@@ -4,22 +4,23 @@
  * Joey Milausnic, March 2025
  */
 
+#include <filesystem>
+#include <string.h>
+
 #include "file_parsing.h"
 #include "tui_utils.h"
 
 namespace fs = std::filesystem;
 
 int main(int argc, char *argv[]) {
-	fs::directory_entry path;
+	fs::directory_entry path = fs::directory_entry(fs::path("./"));
+	unsigned int paging_size = 15;
 
-	// Get directory from path if it exists
-	if (argc > 1) {
-		path = fs::directory_entry(fs::path(argv[1]));
-		// Make sure that argv[1] is valid input
-		if (!path.exists() || !path.is_directory())
-			path = fs::directory_entry(fs::path("./"));
-	} else {
-		path = fs::directory_entry(fs::path("./"));
+	// Get command line args
+	for (int arg = 1; arg < argc; arg++) {
+		int moreFollows = arg + 1 < argc;
+		if (!strcmp(argv[arg], "-dir") && moreFollows)
+			path = fs::directory_entry(fs::path(argv[arg+1]));
 	}
 
 	std::vector<fs::directory_entry> directory;
@@ -27,7 +28,6 @@ int main(int argc, char *argv[]) {
 	fs::directory_entry selection;
 
 	std::string title = "Vine";
-	unsigned int paging_size = 15;
 
 	// Start ncurses
 	Init();
