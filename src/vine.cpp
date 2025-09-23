@@ -21,6 +21,8 @@ int main(int argc, char *argv[]) {
 		int moreFollows = arg + 1 < argc;
 		if (!strcmp(argv[arg], "-dir") && moreFollows)
 			path = fs::directory_entry(fs::path(argv[arg+1]));
+		if (!strcmp(argv[arg], "-p") && moreFollows)
+			paging_size = atoi(argv[arg+1]);
 	}
 
 	std::vector<fs::directory_entry> directory;
