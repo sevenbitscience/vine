@@ -6,6 +6,7 @@
 
 #include <filesystem>
 #include <string.h>
+#include <iostream>
 
 #include "file_parsing.h"
 #include "tui_utils.h"
@@ -13,6 +14,8 @@
 namespace fs = std::filesystem;
 
 void loop(fs::directory_entry &path, unsigned int &paging);
+
+void help();
 
 int main(int argc, char *argv[]) {
 	fs::directory_entry path = fs::directory_entry(fs::path("./"));
@@ -34,6 +37,12 @@ int main(int argc, char *argv[]) {
 	return 0;
 }
 
+void help() {
+	std::cout << 
+		"-dir <directory>	Set the directory to look in\n"
+		"-p <page_size>		Set how many items to show per page\n"
+		"-h, --help			Show this help\n";
+}
 
 void loop(fs::directory_entry &path, unsigned int &paging) {
 	std::vector<fs::directory_entry> directory;
