@@ -29,19 +29,26 @@ int main(int argc, char *argv[]) {
 		else if (!strcmp(argv[arg], "-p") && moreFollows) {
 			paging_size = atoi(argv[arg+1]);
 			if (paging_size < 1) return -1;
+		} else if (!strcmp(argv[arg], "--help") || !strcmp(argv[arg], "-h")) {
+			help();
+			exit(0);
+		} else {
+			std::cout << "Unrecognized argument: " << argv[arg] << '\n';
+			help();
+			exit(1);
 		}
 	}
 
 	loop(path, paging_size);
 
-	return 0;
+	exit(0);
 }
 
 void help() {
 	std::cout << 
-		"-dir <directory>	Set the directory to look in\n"
-		"-p <page_size>		Set how many items to show per page\n"
-		"-h, --help			Show this help\n";
+		"-dir <directory>\tSet the directory to look in\n"
+		"-p <page_size>\t\tSet how many items to show per page\n"
+		"-h, --help\t\tShow this help\n";
 }
 
 void loop(fs::directory_entry &path, unsigned int &paging) {
