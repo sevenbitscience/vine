@@ -1,10 +1,9 @@
 #ifndef TUI_UTILS_H
 #define TUI_UTILS_H
 
+#include <filesystem>
+#include <vector>
 #include <ncurses.h>
-#include <string>
-
-#include "utils.h"
 
 /**
  * Initiallizes ncurses settings
