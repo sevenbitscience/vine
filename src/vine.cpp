@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
 	// Get command line args
 	for (int arg = 1; arg < argc; arg++) {
 		int moreFollows = arg + 1 < argc;
-		if (!strcmp(argv[arg], "-dir") && moreFollows)
+		if (!strcmp(argv[arg], "-d") && moreFollows)
 			path = fs::directory_entry(fs::path(argv[arg+1]));
 		else if (!strcmp(argv[arg], "-p") && moreFollows) {
 			paging_size = atoi(argv[arg+1]);
