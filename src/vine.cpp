@@ -12,6 +12,8 @@
 
 namespace fs = std::filesystem;
 
+void loop(fs::directory_entry &path, unsigned int &paging);
+
 int main(int argc, char *argv[]) {
 	fs::directory_entry path = fs::directory_entry(fs::path("./"));
 	unsigned int paging_size = 15;
@@ -21,10 +23,19 @@ int main(int argc, char *argv[]) {
 		int moreFollows = arg + 1 < argc;
 		if (!strcmp(argv[arg], "-dir") && moreFollows)
 			path = fs::directory_entry(fs::path(argv[arg+1]));
-		if (!strcmp(argv[arg], "-p") && moreFollows)
+		else if (!strcmp(argv[arg], "-p") && moreFollows) {
 			paging_size = atoi(argv[arg+1]);
+			if (paging_size < 1) return -1;
+		}
 	}
 
+	loop(path, paging_size);
+
+	return 0;
+}
+
+
+void loop(fs::directory_entry &path, unsigned int &paging) {
 	std::vector<fs::directory_entry> directory;
 	int selection_index;
 	fs::directory_entry selection;
@@ -39,12 +50,12 @@ int main(int argc, char *argv[]) {
 		directory = GetFiles(path);
 
 		// Show user the selection menu to pick a file
-		selection_index = FileMenu(directory, title, paging_size);
+		selection_index = FileMenu(directory, title, paging);
 
 		// If the user wants to quit
 		if (selection_index == -1) {
 			endwin();
-			return 0;
+			return;
 		}
 
 		selection = directory[selection_index];
@@ -64,9 +75,7 @@ int main(int argc, char *argv[]) {
 			endwin();
 			std::system(callEditor.c_str());
 
-			return 0;
+			return;
 		}
 	}
-	return 0;
 }
-
