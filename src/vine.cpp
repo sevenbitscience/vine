@@ -24,9 +24,9 @@ int main(int argc, char *argv[]) {
 	for (int arg = 1; arg < argc; arg++) {
 		int moreFollows = arg + 1 < argc;
 		if (!strcmp(argv[arg], "-d") && moreFollows)
-			path = fs::directory_entry(fs::path(argv[arg+1]));
+			path = fs::directory_entry(fs::path(argv[++arg]));
 		else if (!strcmp(argv[arg], "-p") && moreFollows) {
-			paging_size = atoi(argv[arg+1]);
+			paging_size = atoi(argv[++arg]);
 			if (paging_size < 1) return -1;
 		} else if (!strcmp(argv[arg], "--help") || !strcmp(argv[arg], "-h")) {
 			help();
