@@ -2,11 +2,10 @@
  * Utilities for drawing the tui with ncurses
  */
 
-#include "tui_utils.h"
+#include "../includes/constants.h"
+#include "../includes/tui_utils.h"
 
 namespace fs = std::filesystem;
-
-std::string PAGE_HINT = "...";
 
 void Init() {
 	// Initiallize ncuses
@@ -24,7 +23,7 @@ void Init() {
 	}
 }
 
-void drawCenteredText(std::string &text, int y) {
+void drawCenteredText(std::string text, int y) {
 	int x_cor = (COLS/2)-((text.length())/2);
 	mvaddstr(y, x_cor, text.c_str()); 
 }
@@ -57,23 +56,22 @@ void drawFileList(std::vector<fs::directory_entry> &files, unsigned int &selecte
 	}
 
 	if (l_start != 0)
-		drawCenteredText(PAGE_HINT, p_top);
+		drawCenteredText(vconstants::PAGE_HINT, p_top);
 
 	if (l_end != files.size()) {
 		int tail_position = (l_end - l_start) + p_top + 1;
-		drawCenteredText(PAGE_HINT, tail_position);
+		drawCenteredText(vconstants::PAGE_HINT, tail_position);
 	}
 }
 
-int FileMenu(std::vector<fs::directory_entry> &items, std::string &title, unsigned int &paging) {
-	unsigned int selected_item = 0;
+int FileMenu(std::vector<fs::directory_entry> &items, int &selection, unsigned int &paging) {
 	int reload_required = 0;
 	unsigned int page = 0;
 	unsigned int start = 0;
 	unsigned int end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
 
-	drawCenteredText(title, 3);
-	drawFileList(items, selected_item, 5, start, end);
+	drawCenteredText(vconstants::TITLE, 3);
+	drawFileList(items, selection, 5, start, end);
 	refresh();
 
 	for (;;) {
@@ -84,32 +82,32 @@ int FileMenu(std::vector<fs::directory_entry> &items, std::string &title, unsign
 			case 'q':
 				// End ncurses
 				endwin();
-				return -1;
+				return vconstants::USER_QUIT;
 				break;
 			case 'j':
-				if (selected_item < items.size()-1) {
-					selected_item++;
-					if (selected_item % paging == 0) page++;
+				if (selection < items.size()-1) {
+					selection++;
+					if (selection % paging == 0) page++;
 					reload_required++;
 				}
 				break;
 			case 'k':
-				if (selected_item > 0) {
-					selected_item--;
-					if (selected_item % paging == paging-1) page--;
+				if (selection > 0) {
+					selection--;
+					if (selection % paging == paging-1) page--;
 					reload_required++;
 				}
 				break;
 			case '\n':
-				return selected_item;
+				return vconstants::SUCCESS;
 		}
 		if (reload_required) {
 			start = page*paging;
 			end = ((page+1)*paging > items.size()) ? items.size() : (page+1)*paging;
 			
 			clear();
-			drawCenteredText(title, 3);
-			drawFileList(items, selected_item, 5, start, end);
+			drawCenteredText(vconstants::TITLE, 3);
+			drawFileList(items, selection, 5, start, end);
 
 			refresh();
 			reload_required = 0;

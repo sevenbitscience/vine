@@ -1,4 +1,5 @@
-#include "file_parsing.h"
+#include "../includes/file_parsing.h"
+#include "../includes/constants.h"
 
 namespace fs = std::filesystem;
 
@@ -6,29 +7,28 @@ int getFileCount(std::string &path) {
 	fs::directory_entry path_dirent{fs::path{path}};
 
 	if (!path_dirent.exists()) 
-		throw std::invalid_argument("Directory path does not exist!");
+		return vconstants::PATH_DOES_NOT_EXIST;
 
 	if (!path_dirent.is_directory()) 
-		throw std::invalid_argument("Directory path does not refer to a directory!");
+		return vconstants::PATH_DOES_NOT_EXIST;
 
 	int count = 0;
 	for (const auto& _: fs::directory_iterator(path)) {
 		count++;
 	}
-	return count;
+	return vconstants::SUCCESS;
 }
 
-std::vector<fs::directory_entry> GetFiles(std::filesystem::directory_entry &path) {
+int GetFiles(std::vector<fs::directory_entry> &entries, std::filesystem::directory_entry &path) {
 	if (!path.exists()) 
-		throw std::invalid_argument("Directory path does not exist!");
+		return vconstants::PATH_DOES_NOT_EXIST;
 
 	if (!path.is_directory()) 
-		throw std::invalid_argument("Directory path does not refer to a directory!");
+		return vconstants::PATH_IS_NOT_DIRECTORY;
 
-	std::vector<fs::directory_entry> files;
 
 	for (const auto& dirent : fs::directory_iterator(path.path())) {
-		files.push_back(dirent);
+		entries.push_back(dirent);
 	}
-	return files;
+	return vconstants::SUCCESS;
 }
